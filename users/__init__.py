@@ -1,15 +1,12 @@
 from flask import Flask
-import os
-from dotenv import load_dotenv
-from flask_pymongo import PyMongo
-load_dotenv()
+from flask_restful import Api
+from pymongo import MongoClient
 
 app = Flask(__name__)
+api = Api(app)
+client = MongoClient('mongodb://localhost:27017/')
+db = client['usersdatabase']
 
-app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
-app.config["MONGO_URI"] = os.getenv('MONGO_URI')
+users_collection = db['users']
 
-db = PyMongo(app)
-
-
-from users import routes
+from users import api
